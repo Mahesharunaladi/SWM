@@ -4,14 +4,14 @@ A comprehensive IoT-enabled waste management solution with real-time monitoring,
 
 ## Features
 
--  **Real-time Waste Tracking**: GPS-enabled waste collection vehicles
--  **Dashboard Analytics**: Monitor waste levels, collection routes, and efficiency metrics
--  **ML-based Optimization**: Predict waste generation and optimize collection routes
--  **Mobile App**: Real-time notifications and status updates
--  **Smart Alerts**: Automated notifications when bins reach capacity
--  **Environmental Impact**: Calculate carbon footprint and environmental metrics
--  **User Management**: Citizens, collectors, and administrators
--  **Reporting**: Detailed analytics and compliance reports
+- 🚛 **Real-time Waste Tracking**: GPS-enabled waste collection vehicles
+- 📊 **Dashboard Analytics**: Monitor waste levels, collection routes, and efficiency metrics
+- 🤖 **ML-based Optimization**: Predict waste generation and optimize collection routes
+- 📱 **Mobile App**: Real-time notifications and status updates
+- 🔔 **Smart Alerts**: Automated notifications when bins reach capacity
+- 🌍 **Environmental Impact**: Calculate carbon footprint and environmental metrics
+- 👥 **User Management**: Citizens, collectors, and administrators
+- 📈 **Reporting**: Detailed analytics and compliance reports
 
 ## Tech Stack
 
