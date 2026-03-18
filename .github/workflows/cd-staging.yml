@@ -9,9 +9,6 @@ jobs:
   deploy-staging:
     name: Deploy to Staging
     runs-on: ubuntu-latest
-    environment:
-      name: staging
-      url: https://staging.swm.example.com
     steps:
       - uses: actions/checkout@v3
 
@@ -52,7 +49,6 @@ jobs:
       - name: Slack notification
         uses: slackapi/slack-github-action@v1
         with:
-          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
           payload: |
             {
               "text": "SWM Staging Deployment",
@@ -66,5 +62,7 @@ jobs:
                 }
               ]
             }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()
         continue-on-error: true
