@@ -1,0 +1,63 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: swm-ingress
+  namespace: swm
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - swm.example.com
+    secretName: swm-tls
+  rules:
+  - host: swm.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+      - path: /api/v1
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 80
+      - path: /ml
+        pathType: Prefix
+        backend:
+          service:
+            name: ml-service
+            port:
+              number: 5000
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: backend-pdb
+  namespace: swm
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: backend
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: frontend-pdb
+  namespace: swm
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: frontend

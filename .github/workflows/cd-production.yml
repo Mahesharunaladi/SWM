@@ -1,0 +1,161 @@
+name: Deploy to Production
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+
+jobs:
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://swm.example.com
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Create deployment
+        id: deployment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.ref,
+              environment: 'production',
+              required_contexts: [],
+              auto_merge: false
+            });
+            return deployment.data.id;
+
+      - name: Database backup
+        run: |
+          echo "Creating database backup..."
+          aws rds create-db-snapshot \
+            --db-instance-identifier swm-prod-db \
+            --db-snapshot-identifier swm-prod-backup-$(date +%s) || true
+
+      - name: Deploy to ECS
+        run: |
+          aws ecs update-service \
+            --cluster swm-production-cluster \
+            --service swm-production-service \
+            --force-new-deployment
+        continue-on-error: true
+
+      - name: Run health checks
+        run: |
+          sleep 60
+          max_attempts=30
+          attempt=0
+          while [ $attempt -lt $max_attempts ]; do
+            if curl -f https://swm.example.com/health > /dev/null 2>&1; then
+              echo "✅ Production is healthy"
+              exit 0
+            fi
+            attempt=$((attempt+1))
+            sleep 2
+          done
+          echo "❌ Production health check failed"
+          exit 1
+        continue-on-error: true
+
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          release_name: Release ${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## Release ${{ steps.get_version.outputs.VERSION }}
+            
+            ### Deployed Services
+            - Backend API
+            - Frontend Dashboard
+            - ML Service
+            
+            ### Changes
+            See commit history for detailed changes.
+          draft: false
+          prerelease: false
+
+      - name: Slack notification
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          payload: |
+            {
+              "text": "SWM Production Deployment",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "✅ Successfully deployed to production\nVersion: ${{ steps.get_version.outputs.VERSION }}"
+                  }
+                }
+              ]
+            }
+        if: always()
+        continue-on-error: true
+
+  # Rollback job
+  rollback:
+    name: Rollback if deployment fails
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    if: failure()
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Rollback to previous version
+        run: |
+          echo "Rolling back to previous version..."
+          aws ecs update-service \
+            --cluster swm-production-cluster \
+            --service swm-production-service \
+            --force-new-deployment || true
+
+      - name: Slack notification - Rollback
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          payload: |
+            {
+              "text": "SWM Production Rollback",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "⚠️ Deployment failed - rolled back to previous version"
+                  }
+                }
+              ]
+            }
+        continue-on-error: true

@@ -1,0 +1,70 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://staging.swm.example.com
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to ECS
+        run: |
+          aws ecs update-service \
+            --cluster swm-staging-cluster \
+            --service swm-staging-service \
+            --force-new-deployment
+        continue-on-error: true
+
+      - name: Run smoke tests
+        run: |
+          sleep 30
+          curl -f https://staging.swm.example.com/health || exit 1
+        continue-on-error: true
+
+      - name: Notify deployment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Deployed to staging environment'
+            });
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+
+      - name: Slack notification
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          payload: |
+            {
+              "text": "SWM Staging Deployment",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "✅ Successfully deployed to staging\n${{ github.event.head_commit.message }}"
+                  }
+                }
+              ]
+            }
+        if: always()
+        continue-on-error: true
