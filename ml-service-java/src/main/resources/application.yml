@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: ML Service - Smart Waste Management
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+    default-property-inclusion: non_null
+
+server:
+  port: 5000
+  servlet:
+    context-path: /
+
+logging:
+  level:
+    root: INFO
+    com.swm.ml: DEBUG
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/ml-service.log
+  file:
+    max-size: 10MB
+    max-history: 10
+
+ml:
+  model:
+    path: models/waste_predictor_model.pkl
+  scaler:
+    path: models/scaler.pkl
+  feature:
+    count: 5
+    names:
+      - feature_1
+      - feature_2
+      - feature_3
+      - feature_4
+      - feature_5
