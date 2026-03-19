@@ -1,4 +1,15 @@
 {
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.server.launchMode": "LightWeight",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "[java]": {
+        "validate.enable": false,
+        "editor.formatOnSave": false
+    },
+    "java.jdt.ls.vmargs": "-XX:+IgnoreUnrecognizedVMOptions --add-modules=ALL-SYSTEM -Dfile.encoding=UTF-8",
+    "java.jdt.ls.java.home": "",
+    "java.help.firstStart": false,
+    "java.trace.server": "off",
     "python.defaultInterpreterPath": "${workspaceFolder}/ml-service/venv/bin/python",
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": false,
@@ -10,31 +21,33 @@
         "editor.formatOnSave": true
     },
     "css.lint.unknownAtRules": "ignore",
-    "[java]": {
-        "validate.enable": false
-    },
     "redhat.telemetry.enabled": false,
     "files.exclude": {
         "**/.classpath": true,
         "**/.project": true,
         "**/.settings": true,
-        "**/bin": true,
-        "**/.factorypath": true,
-        "**/.apt_generated": true,
-        "**/target": true
+        "**/bin": true
     },
-    "java.server.launchMode": "Standard",
-    "java.configuration.updateBuildConfiguration": "interactive",
-    "java.help.firstStart": false,
-    "java.trace.server": "off",
     "java.errors.incompleteClasspath.severity": "ignore",
-    "java.warnings.incompleteClasspath": "ignore",
+    "java.errors.missingNonNullByDefault.severity": "ignore",
+    "java.errors.missingSerialVersionUID.severity": "ignore",
+    "java.errors.nonNullableReturn.severity": "ignore",
+    "java.errors.nullableReturn.severity": "ignore",
+    "java.errors.nullReference.severity": "ignore",
+    "java.errors.potentialNullReference.severity": "ignore",
+    "java.errors.nullAnnotationInferenceConflict.severity": "ignore",
     "java.checkstyle.enable": false,
     "java.saveActionsOnOrganizeImports": [],
     "java.project.referencedLibraries": [],
-    "java.eclipse.downloadSources": false,
+    "java.semanticHighlight.nonReconciled.exclude": true,
+    "java.project.outputPath": "",
+    "java.project.defaultOutputPath": "",
+    "java.eclipse.downloadSources": true,
     "java.implementation.goto.location": "definition",
-    "java.maven.downloadSources": false,
+    "java.maven.downloadSources": true,
+    "java.maven.dependency.resolveFullBuildClasspath": false,
+    "java.maven.warningIncompleteClasspath": false,
+    "java.warnings.incompleteClasspath": "ignore",
     "java.sources.organizeImports.starThreshold": 999,
     "java.completion.filteredTypes": [
         "java.awt.*",
@@ -44,15 +57,6 @@
     ],
     "problems.showCurrentInStatus": false,
     "problems.shortenProblemLabel": true,
-    "java.diagnostics.performanceLogging.enabled": false,
-    "java.refactoring.rename.preview": false,
-    "java.codeGeneration.useBlockStatements": true,
-    "java.jdt.ls.vmargs": "-XX:+UseG1GC -XX:+UseStringDeduplication -Xmx2G",
-    "extensions.ignoreRecommendations": true,
-    "[xml]": {
-        "xml.validate": false
-    },
-    "java.compile.nullAnalysis.mode": "automatic",
-    "extensions.recommendations": [],
-    "security.workspace.trust.enabled": false
+    "redhat.java.validate.enabled": false,
+    "extensions.ignoreRecommendations": false
 }

@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "vscode.python",
+    "ms-python.python",
+    "redhat.java",
+    "redhat.vscode-yaml",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "ms-vscode.makefile-tools"
+  ],
+  "unwantedRecommendations": []
+}
