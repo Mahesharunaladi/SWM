@@ -29,7 +29,7 @@ public class InvalidInputException extends RuntimeException {
  * @author SWM Team
  * @version 1.0.0
  */
-class ModelNotFoundException extends RuntimeException {
+public class ModelNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
