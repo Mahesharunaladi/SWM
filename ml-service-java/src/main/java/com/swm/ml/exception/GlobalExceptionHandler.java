@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.swm.ml.model.ErrorResponse;
@@ -66,9 +65,8 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.builder()
             .error("Service Unavailable")
             .message(exception.getMessage())
-            .statusCode(503)
-            .timestamp(LocalDateTime.now())
-            .path(request.getRequestURI())
+            .status(503)
+            .timestamp(LocalDateTime.now().toString())
             .build();
         
         return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
@@ -91,9 +89,8 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.builder()
             .error("Prediction Error")
             .message(exception.getMessage())
-            .statusCode(500)
-            .timestamp(LocalDateTime.now())
-            .path(request.getRequestURI())
+            .status(500)
+            .timestamp(LocalDateTime.now().toString())
             .build();
         
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -116,9 +113,8 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.builder()
             .error("Internal Server Error")
             .message(exception.getMessage() != null ? exception.getMessage() : "An unexpected error occurred")
-            .statusCode(500)
-            .timestamp(LocalDateTime.now())
-            .path(request.getRequestURI())
+            .status(500)
+            .timestamp(LocalDateTime.now().toString())
             .build();
         
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
