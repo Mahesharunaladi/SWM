@@ -1,13 +1,14 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.server.launchMode": "LightWeight",
+    "java.server.launchMode": "Hybrid",
     "java.configuration.updateBuildConfiguration": "automatic",
     "[java]": {
         "validate.enable": false,
         "editor.formatOnSave": false
     },
-    "java.jdt.ls.vmargs": "-XX:+IgnoreUnrecognizedVMOptions --add-modules=ALL-SYSTEM -Dfile.encoding=UTF-8",
+    "java.jdt.ls.vmargs": "-XX:+IgnoreUnrecognizedVMOptions --add-modules=ALL-SYSTEM -Dfile.encoding=UTF-8 -Xmx1024m",
     "java.jdt.ls.java.home": "",
+    "java.jdt.ls.workspace.symbols.maxResults": 0,
     "java.help.firstStart": false,
     "java.trace.server": "off",
     "python.defaultInterpreterPath": "${workspaceFolder}/ml-service/venv/bin/python",
@@ -57,6 +58,9 @@
     ],
     "problems.showCurrentInStatus": false,
     "problems.shortenProblemLabel": true,
+    "problems.showDecorations": false,
+    "problems.decorations.enabled": false,
     "redhat.java.validate.enabled": false,
-    "extensions.ignoreRecommendations": false
+    "extensions.ignoreRecommendations": false,
+    "java.diagnostics.fileMaxProblems": 0
 }
