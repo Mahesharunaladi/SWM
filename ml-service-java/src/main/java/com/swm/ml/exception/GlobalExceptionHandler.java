@@ -42,9 +42,8 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.builder()
             .error("Invalid Input")
             .message(exception.getMessage())
-            .statusCode(400)
-            .timestamp(LocalDateTime.now())
-            .path(request.getRequestURI())
+            .status(400)
+            .timestamp(LocalDateTime.now().toString())
             .build();
         
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
