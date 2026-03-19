@@ -12,6 +12,8 @@
     "java.help.firstStart": false,
     "java.trace.server": "off",
     "python.defaultInterpreterPath": "${workspaceFolder}/ml-service/venv/bin/python",
+    "python.analysis.extraPaths": ["${workspaceFolder}/ml-service/venv/lib/python3.14/site-packages"],
+    "python.analysis.typeCheckingMode": "off",
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,

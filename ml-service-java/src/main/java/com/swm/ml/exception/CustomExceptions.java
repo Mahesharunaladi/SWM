@@ -1,64 +1,11 @@
-package com.swm.ml.exception;
-
 /**
- * Custom exception for missing required input data.
+ * DEPRECATED: This file has been refactored.
  * 
- * Thrown when API requests lack necessary parameters or data.
+ * All exception classes have been moved to their individual files:
+ * - InvalidInputException.java
+ * - ModelNotFoundException.java (or check other files)
+ * - PredictionException.java (or check other files)
  * 
- * @author SWM Team
- * @version 1.0.0
+ * This file is kept for reference only and should be deleted.
  */
-public class InvalidInputException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
-
-    public InvalidInputException(String message) {
-        super(message);
-    }
-
-    public InvalidInputException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
-
-/**
- * Custom exception for model loading failures.
- * 
- * Thrown when the ML model cannot be loaded or is unavailable.
- * 
- * @author SWM Team
- * @version 1.0.0
- */
-class ModelNotFoundException extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
-
-    public ModelNotFoundException(String message) {
-        super(message);
-    }
-
-    public ModelNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
-
-/**
- * Custom exception for prediction failures.
- * 
- * Thrown when a prediction cannot be computed.
- * 
- * @author SWM Team
- * @version 1.0.0
- */
-class PredictionException extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
-
-    public PredictionException(String message) {
-        super(message);
-    }
-
-    public PredictionException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
