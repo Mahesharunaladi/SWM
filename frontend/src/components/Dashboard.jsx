@@ -42,6 +42,31 @@ const Dashboard = ({ sidebarOpen }) => {
 
   const [filters, setFilters] = useState('today');
 
+  // Handle filter button clicks
+  const handleFilterClick = (filterType) => {
+    setFilters(filterType);
+    console.log(`Filter changed to: ${filterType}`);
+  };
+
+  // Handle view all link
+  const handleViewAll = (e) => {
+    e.preventDefault();
+    alert('View All Activity - Full history will be displayed');
+    console.log('View All clicked');
+  };
+
+  // Handle action button click
+  const handleActionClick = (binId, location) => {
+    alert(`Viewing details for ${binId} at ${location}`);
+    console.log(`Action clicked for ${binId} at ${location}`);
+  };
+
+  // Handle chart options
+  const handleChartOptions = (chartName) => {
+    alert(`Chart options for ${chartName}`);
+    console.log(`Chart options clicked for ${chartName}`);
+  };
+
   return (
     <div className={`dashboard-page ${!sidebarOpen ? 'full-width' : ''}`}>
       {/* Header Section */}
@@ -60,19 +85,19 @@ const Dashboard = ({ sidebarOpen }) => {
         <div className="filter-buttons">
           <button
             className={`filter-btn ${filters === 'today' ? 'active' : ''}`}
-            onClick={() => setFilters('today')}
+            onClick={() => handleFilterClick('today')}
           >
             Today
           </button>
           <button
             className={`filter-btn ${filters === 'week' ? 'active' : ''}`}
-            onClick={() => setFilters('week')}
+            onClick={() => handleFilterClick('week')}
           >
             This Week
           </button>
           <button
             className={`filter-btn ${filters === 'month' ? 'active' : ''}`}
-            onClick={() => setFilters('month')}
+            onClick={() => handleFilterClick('month')}
           >
             This Month
           </button>
@@ -123,7 +148,7 @@ const Dashboard = ({ sidebarOpen }) => {
         <div className="chart-card">
           <div className="chart-header">
             <h3 className="chart-title">Fill Level Distribution</h3>
-            <button className="chart-options">⋮</button>
+            <button className="chart-options" onClick={() => handleChartOptions('Fill Level Distribution')}>⋮</button>
           </div>
           <div className="chart-placeholder">
             <div className="placeholder-bar">
@@ -141,7 +166,7 @@ const Dashboard = ({ sidebarOpen }) => {
         <div className="chart-card">
           <div className="chart-header">
             <h3 className="chart-title">Daily Collections</h3>
-            <button className="chart-options">⋮</button>
+            <button className="chart-options" onClick={() => handleChartOptions('Daily Collections')}>⋮</button>
           </div>
           <div className="chart-placeholder">
             <div className="mini-chart">
@@ -161,7 +186,7 @@ const Dashboard = ({ sidebarOpen }) => {
       <div className="table-card">
         <div className="table-header">
           <h3 className="table-title">Recent Activity</h3>
-          <a href="#view-all" className="view-all-link">
+          <a href="#view-all" onClick={handleViewAll} className="view-all-link">
             View All →
           </a>
         </div>
@@ -190,7 +215,7 @@ const Dashboard = ({ sidebarOpen }) => {
                 </td>
                 <td className="timestamp">{activity.timestamp}</td>
                 <td>
-                  <button className="action-btn">📍 View</button>
+                  <button className="action-btn" onClick={() => handleActionClick(activity.bin, activity.location)}>📍 View</button>
                 </td>
               </tr>
             ))}
