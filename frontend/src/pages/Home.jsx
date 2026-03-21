@@ -12,10 +12,10 @@ const Home = () => {
         <div className="hero-content">
           <div className="hero-text">
             <h1 className="hero-title">
-              Smart Waste Management System
+              Smart Waste Management with QR Code Tracking
             </h1>
             <p className="hero-subtitle">
-              Revolutionizing waste collection with IoT-enabled smart bins and intelligent routing algorithms
+              Simple QR code scanning on waste bins + Vehicle scanners = Complete collection tracking and real-time analytics
             </p>
             <div className="hero-buttons">
               <button className="btn btn-primary btn-large" onClick={() => navigate('/login')}>
@@ -28,20 +28,20 @@ const Home = () => {
             <div className="hero-stats">
               <div className="stat">
                 <h3>10,000+</h3>
-                <p>Active Bins</p>
+                <p>Bins with QR Codes</p>
               </div>
               <div className="stat">
                 <h3>500+</h3>
-                <p>Cities</p>
+                <p>Active Trucks</p>
               </div>
               <div className="stat">
                 <h3>98%</h3>
-                <p>Efficiency</p>
+                <p>Collection Rate</p>
               </div>
             </div>
           </div>
           <div className="hero-image">
-            <div className="hero-visual">🌍♻️</div>
+            <div className="hero-visual">📱♻️🚛</div>
           </div>
         </div>
       </section>

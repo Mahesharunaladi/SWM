@@ -12,6 +12,14 @@ const Login = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Admin credentials (4 IDs for municipal staff)
+  const adminCredentials = [
+    { email: 'admin@swm.com', password: 'admin123', name: 'Admin' },
+    { email: 'supervisor@swm.com', password: 'super123', name: 'Supervisor' },
+    { email: 'manager@swm.com', password: 'manager123', name: 'Manager' },
+    { email: 'coordinator@swm.com', password: 'coord123', name: 'Coordinator' },
+  ];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -32,14 +40,13 @@ const Login = () => {
       return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError('Please enter a valid email');
-      setIsLoading(false);
-      return;
-    }
+    // Check credentials against admin list
+    const admin = adminCredentials.find(
+      (cred) => cred.email === formData.email && cred.password === formData.password
+    );
 
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (!admin) {
+      setError('Invalid email or password. Please check your credentials.');
       setIsLoading(false);
       return;
     }
@@ -48,8 +55,8 @@ const Login = () => {
     setTimeout(() => {
       // Store login info in localStorage
       localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('userEmail', formData.email);
-      localStorage.setItem('userName', formData.email.split('@')[0]);
+      localStorage.setItem('userEmail', admin.email);
+      localStorage.setItem('userName', admin.name);
 
       // Redirect to dashboard
       navigate('/dashboard');
@@ -58,9 +65,10 @@ const Login = () => {
   };
 
   const handleDemoLogin = () => {
+    // Use first admin account for demo
     localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userEmail', 'driver@swm.com');
-    localStorage.setItem('userName', 'Driver');
+    localStorage.setItem('userEmail', 'admin@swm.com');
+    localStorage.setItem('userName', 'Admin');
     navigate('/dashboard');
   };
 
@@ -95,7 +103,18 @@ const Login = () => {
         <div className="login-form-section">
           <div className="login-form-container">
             <h2>Welcome Back</h2>
-            <p className="login-subtitle">Sign in to your account</p>
+            <p className="login-subtitle">Municipal Admin Portal</p>
+
+            {/* Admin Credentials Info */}
+            <div className="admin-credentials-info">
+              <p className="info-title">📋 Valid Credentials:</p>
+              <ul className="credentials-list">
+                <li><strong>admin@swm.com</strong> / admin123</li>
+                <li><strong>supervisor@swm.com</strong> / super123</li>
+                <li><strong>manager@swm.com</strong> / manager123</li>
+                <li><strong>coordinator@swm.com</strong> / coord123</li>
+              </ul>
+            </div>
 
             <form onSubmit={handleSubmit} className="login-form">
               {error && (

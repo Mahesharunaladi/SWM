@@ -37,13 +37,33 @@ const App = () => {
   const isHomePage = location.pathname === '/';
   const isLoginPage = location.pathname === '/login';
 
-  // If not logged in and trying to access dashboard pages, redirect to login
-  if (!isLoggedIn && !isHomePage && !isLoginPage) {
-    return <Navigate to="/login" />;
+  // If logged in, show dashboard even on home route
+  if (isLoggedIn) {
+    return (
+      <div className="app-container">
+        <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+        <div className={`main-content ${sidebarOpen ? 'sidebar-expanded' : ''}`}>
+          <Navigation onToggleSidebar={toggleSidebar} onLogout={handleLogout} />
+          <Routes>
+            <Route path="/" element={<Dashboard sidebarOpen={sidebarOpen} />} />
+            <Route path="/dashboard" element={<Dashboard sidebarOpen={sidebarOpen} />} />
+            <Route path="/scanner" element={<QRScanner />} />
+            <Route path="/tracking" element={<LiveTracking />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="*" element={<Dashboard sidebarOpen={sidebarOpen} />} />
+          </Routes>
+        </div>
+      </div>
+    );
   }
 
-  // Show home page
-  if (isHomePage && !isLoggedIn) {
+  // If not logged in and trying to access dashboard pages (except home and login), redirect to login
+  if (!isLoginPage && !isHomePage) {
+    return <Navigate to="/" />;
+  }
+
+  // Show home page when not logged in
+  if (isHomePage) {
     return (
       <div className="home-layout">
         <Navbar isLoggedIn={false} />
@@ -56,23 +76,6 @@ const App = () => {
   if (isLoginPage) {
     return <Login />;
   }
-
-  // Show dashboard for logged in users
-  return (
-    <div className="app-container">
-      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
-      <div className={`main-content ${sidebarOpen ? 'sidebar-expanded' : ''}`}>
-        <Navigation onToggleSidebar={toggleSidebar} onLogout={handleLogout} />
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard sidebarOpen={sidebarOpen} />} />
-          <Route path="/scanner" element={<QRScanner />} />
-          <Route path="/tracking" element={<LiveTracking />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="*" element={<Dashboard sidebarOpen={sidebarOpen} />} />
-        </Routes>
-      </div>
-    </div>
-  );
 };
 
 function AppWrapper() {
