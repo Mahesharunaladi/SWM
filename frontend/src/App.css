@@ -33,13 +33,20 @@ body {
   display: flex;
   min-height: 100vh;
   background: var(--light);
+  width: 100%;
 }
 
 .main-content {
   flex: 1;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+}
+
+.main-content.sidebar-expanded {
+  margin-left: 280px;
 }
 
 /* ==================== Sidebar ==================== */
@@ -479,13 +486,8 @@ body {
     width: 100%;
   }
 
-  .dashboard {
+  .main-content {
     margin-left: 0;
-    padding: 1rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
   }
 
   .navbar {
@@ -510,6 +512,10 @@ body {
 }
 
 @media (max-width: 480px) {
+  .main-content {
+    margin-left: 0;
+  }
+
   .data-table {
     font-size: 0.9rem;
   }

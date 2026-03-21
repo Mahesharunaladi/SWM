@@ -5,7 +5,7 @@ import Navigation from './components/Navigation';
 import Sidebar from './components/Sidebar';
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="app-container">
       <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
-      <div className="main-content">
+      <div className={`main-content ${sidebarOpen ? 'sidebar-expanded' : ''}`}>
         <Navigation onToggleSidebar={toggleSidebar} />
         <Dashboard sidebarOpen={sidebarOpen} />
       </div>
