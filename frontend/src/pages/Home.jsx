@@ -1,7 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Home.css';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="home-page">
       {/* Hero Section */}
@@ -15,8 +18,12 @@ const Home = () => {
               Revolutionizing waste collection with IoT-enabled smart bins and intelligent routing algorithms
             </p>
             <div className="hero-buttons">
-              <button className="btn btn-primary btn-large">Get Started</button>
-              <button className="btn btn-outline btn-large">Learn More</button>
+              <button className="btn btn-primary btn-large" onClick={() => navigate('/login')}>
+                Get Started
+              </button>
+              <button className="btn btn-outline btn-large" onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}>
+                Learn More
+              </button>
             </div>
             <div className="hero-stats">
               <div className="stat">

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
 
 const Navbar = ({ isLoggedIn }) => {
+  const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -44,8 +46,8 @@ const Navbar = ({ isLoggedIn }) => {
             </div>
           ) : (
             <>
-              <a href="#login" className="nav-link">Login</a>
-              <button className="btn btn-primary">Sign Up</button>
+              <a href="#login" className="nav-link" onClick={() => navigate('/login')}>Login</a>
+              <button className="btn btn-primary" onClick={() => navigate('/login')}>Sign Up</button>
             </>
           )}
         </div>

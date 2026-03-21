@@ -274,6 +274,11 @@
   text-decoration: none;
   transition: all 0.2s ease;
   cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: inherit;
 }
 
 .dropdown-item:hover {

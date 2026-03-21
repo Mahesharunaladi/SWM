@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Navigation.css';
 
-const Navigation = ({ onToggleSidebar }) => {
+const Navigation = ({ onToggleSidebar, onLogout }) => {
+  const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const userName = localStorage.getItem('userName') || 'Admin';
 
   const notifications = [
     { id: 1, message: 'Bin #12 is 90% full', time: '5 mins ago', read: false },
@@ -67,10 +70,12 @@ const Navigation = ({ onToggleSidebar }) => {
 
         {/* User Profile Dropdown */}
         <div className="user-profile">
-          <div className="user-avatar">AD</div>
+          <div className="user-avatar">
+            {userName.charAt(0).toUpperCase()}
+          </div>
           <div className="user-info">
-            <p className="user-name">Admin</p>
-            <p className="user-role">Administrator</p>
+            <p className="user-name">{userName}</p>
+            <p className="user-role">Driver</p>
           </div>
           <button
             className="dropdown-toggle"
@@ -91,9 +96,15 @@ const Navigation = ({ onToggleSidebar }) => {
                 ❓ Help & Support
               </a>
               <div className="dropdown-divider"></div>
-              <a href="#logout" className="dropdown-item logout">
+              <button
+                className="dropdown-item logout"
+                onClick={() => {
+                  onLogout();
+                  navigate('/');
+                }}
+              >
                 🚪 Logout
-              </a>
+              </button>
             </div>
           )}
         </div>
