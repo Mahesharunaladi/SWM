@@ -462,8 +462,265 @@
     font-size: 0.85rem;
   }
 
-  .charts-section {
+/* Truck Tracking Section */
+.trucks-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.trucks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.truck-card {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.truck-card:hover {
+  border-color: #10b981;
+  box-shadow: 0 8px 16px rgba(16, 185, 129, 0.15);
+  transform: translateY(-4px);
+}
+
+.truck-card.active {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #f8fef5 100%);
+}
+
+.truck-card.idle {
+  border-color: #d1d5db;
+  opacity: 0.8;
+}
+
+/* Truck Header */
+.truck-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.truck-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.truck-number {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.truck-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.truck-status.active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.truck-status.idle {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.truck-efficiency {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+/* Driver Section */
+.driver-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+}
+
+.driver-info {
+  flex: 1;
+}
+
+.driver-name {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.driver-phone {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.driver-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-icon-btn {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-icon-btn:hover {
+  border-color: #10b981;
+  background: #f0fdf4;
+  transform: scale(1.05);
+}
+
+/* Location Info */
+.location-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #f0f9ff;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.location-label {
+  font-weight: 600;
+  color: #1e40af;
+}
+
+.location-value {
+  color: #64748b;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Collection Status */
+.collection-status {
+  margin-bottom: 1rem;
+}
+
+.status-group {
+  margin-bottom: 1rem;
+}
+
+.status-header {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bins-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.bin-badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.bin-badge.collected {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.bin-badge.pending {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+/* Truck Footer */
+.truck-footer {
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+@media (max-width: 768px) {
+  .trucks-grid {
     grid-template-columns: 1fr;
+  }
+
+  .truck-card {
+    padding: 1rem;
+  }
+
+  .driver-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .driver-actions {
+    align-self: flex-end;
   }
 }
 

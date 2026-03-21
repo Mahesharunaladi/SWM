@@ -4,50 +4,60 @@ import '../styles/LiveTracking.css';
 const LiveTracking = () => {
   const [trucks, setTrucks] = useState([
     {
-      id: 'TRUCK-001',
-      driver: 'John Doe',
-      latitude: 40.7128,
-      longitude: -74.0060,
+      id: 'TRK-001',
+      driver: 'Rajesh Kumar',
+      latitude: 12.9716,
+      longitude: 77.5946,
       status: 'active',
       collectionsToday: 12,
-      nextBin: 'BIN-005',
+      nextBin: 'BIN-045',
       efficiency: 92,
+      speed: 25,
+      wasteCollected: 245,
     },
     {
-      id: 'TRUCK-002',
-      driver: 'Jane Smith',
-      latitude: 40.7589,
-      longitude: -73.9851,
+      id: 'TRK-002',
+      driver: 'Arjun Singh',
+      latitude: 12.9352,
+      longitude: 77.6245,
       status: 'active',
       collectionsToday: 8,
-      nextBin: 'BIN-012',
+      nextBin: 'BIN-067',
       efficiency: 87,
+      speed: 18,
+      wasteCollected: 198,
     },
     {
-      id: 'TRUCK-003',
-      driver: 'Mike Johnson',
-      latitude: 40.7614,
-      longitude: -73.9776,
+      id: 'TRK-003',
+      driver: 'Priya Sharma',
+      latitude: 12.8349,
+      longitude: 77.6645,
       status: 'idle',
       collectionsToday: 15,
-      nextBin: 'BIN-008',
+      nextBin: 'BIN-089',
       efficiency: 95,
+      speed: 0,
+      wasteCollected: 142,
     },
     {
-      id: 'TRUCK-004',
-      driver: 'Sarah Williams',
-      latitude: 40.7505,
-      longitude: -73.9934,
+      id: 'TRK-004',
+      driver: 'Vikram Patel',
+      latitude: 12.9689,
+      longitude: 77.5456,
       status: 'active',
       collectionsToday: 10,
-      nextBin: 'BIN-015',
+      nextBin: 'BIN-023',
       efficiency: 89,
+      speed: 22,
+      wasteCollected: 187,
     },
   ]);
 
   const [selectedTruck, setSelectedTruck] = useState(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 40.7580, lng: -73.9855 });
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const [mapZoom, setMapZoom] = useState(1);
+  const [mapCenter, setMapCenter] = useState({ lat: 12.95, lng: 77.6 });
+  const [showSpeedometer, setShowSpeedometer] = useState(true);
 
   // Simulate truck movement every 5 seconds
   useEffect(() => {
@@ -56,8 +66,15 @@ const LiveTracking = () => {
         setTrucks(prevTrucks =>
           prevTrucks.map(truck => ({
             ...truck,
-            latitude: truck.latitude + (Math.random() - 0.5) * 0.01,
-            longitude: truck.longitude + (Math.random() - 0.5) * 0.01,
+            // Random small movements simulating real GPS data
+            latitude: truck.latitude + (Math.random() - 0.5) * 0.005,
+            longitude: truck.longitude + (Math.random() - 0.5) * 0.005,
+            // Speed changes for active trucks
+            speed: truck.status === 'active' 
+              ? Math.floor(Math.random() * 40) + 10 
+              : 0,
+            // Occasionally update waste collected
+            wasteCollected: truck.wasteCollected + (truck.status === 'active' ? Math.random() * 5 : 0),
           }))
         );
       }
@@ -66,12 +83,40 @@ const LiveTracking = () => {
     return () => clearInterval(interval);
   }, [autoRefresh]);
 
+  // Update map center to follow selected truck
+  useEffect(() => {
+    if (selectedTruck) {
+      setMapCenter({ lat: selectedTruck.latitude, lng: selectedTruck.longitude });
+    }
+  }, [selectedTruck?.id]);
+
   const getStatusColor = (status) => {
     return status === 'active' ? '#10b981' : '#9ca3af';
   };
 
   const getTruckIcon = (status) => {
     return status === 'active' ? '🚚' : '🚛';
+  };
+
+  const getSpeedColor = (speed) => {
+    if (speed === 0) return '#9ca3af';
+    if (speed < 15) return '#fbbf24';
+    if (speed < 30) return '#10b981';
+    return '#ef4444';
+  };
+
+  // Convert GPS coordinates to map position (percentage)
+  const coordToMapPosition = (lat, lng) => {
+    const mapWidth = 77.8;
+    const mapHeight = 0.4;
+    const centerLat = mapCenter.lat;
+    const centerLng = mapCenter.lng;
+    
+    // Calculate position relative to map center
+    const left = 50 + ((lng - centerLng) / mapWidth) * 100 * mapZoom;
+    const top = 50 + ((lat - centerLat) / mapHeight) * 100 * mapZoom;
+    
+    return { left, top };
   };
 
   return (
@@ -85,62 +130,156 @@ const LiveTracking = () => {
         {/* Map Section */}
         <div className="map-container">
           <div className="map-header">
-            <h2>Live Map</h2>
+            <div className="map-title-section">
+              <h2>📍 Live Fleet Map</h2>
+              <p className="map-subtitle">Real-time GPS tracking of all trucks</p>
+            </div>
             <div className="map-controls">
+              <button 
+                className="zoom-btn"
+                onClick={() => setMapZoom(Math.min(mapZoom + 0.5, 3))}
+                title="Zoom In"
+              >
+                🔍+
+              </button>
+              <button 
+                className="zoom-btn"
+                onClick={() => setMapZoom(Math.max(mapZoom - 0.5, 0.5))}
+                title="Zoom Out"
+              >
+                🔍−
+              </button>
               <label className="auto-refresh-toggle">
                 <input
                   type="checkbox"
                   checked={autoRefresh}
                   onChange={(e) => setAutoRefresh(e.target.checked)}
                 />
-                Auto Refresh (5s)
+                Auto Refresh
               </label>
             </div>
           </div>
 
           <div className="map-visual">
-            <div className="map-placeholder">
-              <p>📍 Map Integration Area</p>
-              <p className="map-info">
-                (Ready for Google Maps / Leaflet integration)
-              </p>
-            </div>
+            {/* Map Grid Background */}
+            <div className="map-grid">
+              {/* Grid lines for reference */}
+              <div className="grid-lines"></div>
+              
+              {/* Truck Markers with Live Position Detection */}
+              <div className="truck-markers-container">
+                {trucks.map((truck) => {
+                  const pos = coordToMapPosition(truck.latitude, truck.longitude);
+                  return (
+                    <div
+                      key={truck.id}
+                      className={`truck-marker live-marker ${selectedTruck?.id === truck.id ? 'selected' : ''} ${truck.status}`}
+                      style={{
+                        left: `${pos.left}%`,
+                        top: `${pos.top}%`,
+                        transform: 'translate(-50%, -50%)',
+                      }}
+                      onClick={() => setSelectedTruck(truck)}
+                      title={`${truck.id} - ${truck.driver}`}
+                    >
+                      <div className="marker-content">
+                        <span className="marker-icon">{getTruckIcon(truck.status)}</span>
+                        {truck.status === 'active' && <div className="marker-pulse"></div>}
+                      </div>
+                      <div className="marker-label-popup">{truck.id}</div>
+                    </div>
+                  );
+                })}
+              </div>
 
-            {/* Truck Markers */}
-            <div className="truck-markers">
-              {trucks.map((truck, index) => (
-                <div
-                  key={truck.id}
-                  className={`truck-marker ${selectedTruck?.id === truck.id ? 'selected' : ''}`}
-                  style={{
-                    left: `${((truck.longitude + 74.2) / 1.2) * 100}%`,
-                    top: `${((truck.latitude - 40.6) / 0.2) * 100}%`,
-                    borderColor: getStatusColor(truck.status),
-                  }}
-                  onClick={() => setSelectedTruck(truck)}
-                  title={truck.driver}
-                >
-                  <span className="marker-icon">{getTruckIcon(truck.status)}</span>
-                  <span className="marker-label">{truck.id}</span>
+              {/* Map Info Overlay */}
+              <div className="map-info-overlay">
+                <div className="location-indicator">
+                  📍 Center: {mapCenter.lat.toFixed(4)}°N, {mapCenter.lng.toFixed(4)}°E
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Selected Truck Info */}
-          {selectedTruck && (
-            <div className="selected-truck-info">
-              <button className="close-btn" onClick={() => setSelectedTruck(null)}>✕</button>
-              <h3>{selectedTruck.id}</h3>
-              <div className="truck-info-details">
-                <p><strong>👤 Driver:</strong> {selectedTruck.driver}</p>
-                <p><strong>📍 Location:</strong> {selectedTruck.latitude.toFixed(4)}, {selectedTruck.longitude.toFixed(4)}</p>
-                <p><strong>📦 Collections:</strong> {selectedTruck.collectionsToday}</p>
-                <p><strong>🎯 Next Bin:</strong> {selectedTruck.nextBin}</p>
-                <p><strong>⚡ Efficiency:</strong> {selectedTruck.efficiency}%</p>
+                <div className="legend">
+                  <div className="legend-item active">🟢 Active Truck</div>
+                  <div className="legend-item idle">⚪ Idle Truck</div>
+                </div>
               </div>
             </div>
-          )}
+
+            {/* Selected Truck Info Panel */}
+            {selectedTruck && (
+              <div className="selected-truck-panel">
+                <button className="close-btn" onClick={() => setSelectedTruck(null)}>✕</button>
+                
+                <div className="panel-header">
+                  <h3>{selectedTruck.id}</h3>
+                  <span className={`status-badge ${selectedTruck.status}`}>
+                    {selectedTruck.status === 'active' ? '🟢 Active' : '⚪ Idle'}
+                  </span>
+                </div>
+
+                <div className="panel-content">
+                  {/* Driver Info */}
+                  <div className="info-section">
+                    <h4>Driver Information</h4>
+                    <p>👤 <strong>{selectedTruck.driver}</strong></p>
+                  </div>
+
+                  {/* Live Location */}
+                  <div className="info-section">
+                    <h4>Live Location</h4>
+                    <p className="location-coords">
+                      📍 {selectedTruck.latitude.toFixed(6)}°N<br/>
+                      📍 {selectedTruck.longitude.toFixed(6)}°E
+                    </p>
+                  </div>
+
+                  {/* Speed & Movement */}
+                  {selectedTruck.status === 'active' && (
+                    <div className="info-section">
+                      <h4>Speed & Movement</h4>
+                      <div className="speed-display">
+                        <div className="speed-gauge">
+                          <div className="speed-value" style={{ color: getSpeedColor(selectedTruck.speed) }}>
+                            {Math.round(selectedTruck.speed)} km/h
+                          </div>
+                          <div className="speed-bar">
+                            <div 
+                              className="speed-fill" 
+                              style={{ width: `${(selectedTruck.speed / 50) * 100}%`, backgroundColor: getSpeedColor(selectedTruck.speed) }}
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Collections Stats */}
+                  <div className="info-section">
+                    <h4>Collection Statistics</h4>
+                    <div className="stats-grid">
+                      <div className="stat-item">
+                        <span className="stat-label">Collections</span>
+                        <span className="stat-value">{selectedTruck.collectionsToday}</span>
+                      </div>
+                      <div className="stat-item">
+                        <span className="stat-label">Waste (kg)</span>
+                        <span className="stat-value">{Math.round(selectedTruck.wasteCollected)}</span>
+                      </div>
+                      <div className="stat-item">
+                        <span className="stat-label">Efficiency</span>
+                        <span className="stat-value">{selectedTruck.efficiency}%</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Next Collection */}
+                  <div className="info-section">
+                    <h4>Next Collection</h4>
+                    <p className="next-bin">🎯 {selectedTruck.nextBin}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Trucks List */}

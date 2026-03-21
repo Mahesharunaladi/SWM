@@ -42,6 +42,46 @@ const Dashboard = ({ sidebarOpen }) => {
 
   const [filters, setFilters] = useState('today');
 
+  // Truck & Driver Data with Route Information
+  const [trucks, setTrucks] = useState([
+    {
+      id: 1,
+      truckNo: 'TRK-001',
+      driver: 'Rajesh Kumar',
+      phone: '98765-43210',
+      currentLocation: '12.9716° N, 77.5946° E',
+      status: 'Active',
+      collected: ['BIN-001', 'BIN-002', 'BIN-012'],
+      pending: ['BIN-045', 'BIN-067', 'BIN-089'],
+      totalWaste: 245,
+      efficiency: '92%',
+    },
+    {
+      id: 2,
+      truckNo: 'TRK-002',
+      driver: 'Arjun Singh',
+      phone: '99876-54321',
+      currentLocation: '12.9352° N, 77.6245° E',
+      status: 'Active',
+      collected: ['BIN-015', 'BIN-023', 'BIN-034'],
+      pending: ['BIN-055', 'BIN-078', 'BIN-091'],
+      totalWaste: 198,
+      efficiency: '88%',
+    },
+    {
+      id: 3,
+      truckNo: 'TRK-003',
+      driver: 'Priya Sharma',
+      phone: '98765-12345',
+      currentLocation: '12.8349° N, 77.6645° E',
+      status: 'Idle',
+      collected: ['BIN-041', 'BIN-052'],
+      pending: ['BIN-063', 'BIN-074', 'BIN-085', 'BIN-096'],
+      totalWaste: 142,
+      efficiency: '85%',
+    },
+  ]);
+
   // Handle filter button clicks
   const handleFilterClick = (filterType) => {
     setFilters(filterType);
@@ -65,6 +105,34 @@ const Dashboard = ({ sidebarOpen }) => {
   const handleChartOptions = (chartName) => {
     alert(`Chart options for ${chartName}`);
     console.log(`Chart options clicked for ${chartName}`);
+  };
+
+  // Handle truck click for details
+  const handleTruckClick = (truck) => {
+    console.log('Truck details:', truck);
+    alert(`
+Truck: ${truck.truckNo}
+Driver: ${truck.driver}
+Phone: ${truck.phone}
+Location: ${truck.currentLocation}
+Status: ${truck.status}
+Efficiency: ${truck.efficiency}
+Total Waste Collected: ${truck.totalWaste} kg
+    `);
+  };
+
+  // Handle driver contact
+  const handleCallDriver = (e, driverPhone, driverName) => {
+    e.stopPropagation();
+    alert(`Calling ${driverName} at ${driverPhone}`);
+    console.log(`Call initiated to ${driverName}`);
+  };
+
+  // Handle view route details
+  const handleViewRoute = (e, truckNo) => {
+    e.stopPropagation();
+    alert(`Route details for ${truckNo} - Navigate to Live Tracking for real-time map`);
+    console.log(`View route for ${truckNo}`);
   };
 
   return (
@@ -140,6 +208,92 @@ const Dashboard = ({ sidebarOpen }) => {
           <div className="stat-change">
             <span>↑ 25%</span> this month
           </div>
+        </div>
+      </div>
+
+      {/* Live Truck Tracking Section */}
+      <div className="trucks-section">
+        <h2 className="section-title">🚛 Live Truck Tracking & Driver Details</h2>
+        <div className="trucks-grid">
+          {trucks.map((truck) => (
+            <div 
+              key={truck.id} 
+              className={`truck-card ${truck.status.toLowerCase()}`}
+              onClick={() => handleTruckClick(truck)}
+            >
+              {/* Truck Header */}
+              <div className="truck-header">
+                <div className="truck-info">
+                  <h3 className="truck-number">{truck.truckNo}</h3>
+                  <span className={`truck-status ${truck.status.toLowerCase()}`}>
+                    🔴 {truck.status}
+                  </span>
+                </div>
+                <div className="truck-efficiency">{truck.efficiency}</div>
+              </div>
+
+              {/* Driver Details */}
+              <div className="driver-section">
+                <div className="driver-info">
+                  <div className="driver-name">👨‍💼 {truck.driver}</div>
+                  <div className="driver-phone">📱 {truck.phone}</div>
+                </div>
+                <div className="driver-actions">
+                  <button 
+                    className="action-icon-btn"
+                    onClick={(e) => handleCallDriver(e, truck.phone, truck.driver)}
+                    title="Call Driver"
+                  >
+                    ☎️
+                  </button>
+                  <button 
+                    className="action-icon-btn"
+                    onClick={(e) => handleViewRoute(e, truck.truckNo)}
+                    title="View Route"
+                  >
+                    🗺️
+                  </button>
+                </div>
+              </div>
+
+              {/* Location Info */}
+              <div className="location-info">
+                <span className="location-label">📍 Current:</span>
+                <span className="location-value">{truck.currentLocation}</span>
+              </div>
+
+              {/* Collection Status */}
+              <div className="collection-status">
+                {/* Collected */}
+                <div className="status-group">
+                  <div className="status-header">✅ Collected ({truck.collected.length})</div>
+                  <div className="bins-list">
+                    {truck.collected.map((bin, idx) => (
+                      <span key={idx} className="bin-badge collected">{bin}</span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Pending */}
+                <div className="status-group">
+                  <div className="status-header">⏳ Pending ({truck.pending.length})</div>
+                  <div className="bins-list">
+                    {truck.pending.map((bin, idx) => (
+                      <span key={idx} className="bin-badge pending">{bin}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats Footer */}
+              <div className="truck-footer">
+                <div className="stat-item">
+                  <span className="stat-label">Total Waste:</span>
+                  <span className="stat-value">{truck.totalWaste} kg</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
