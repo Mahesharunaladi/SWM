@@ -2,8 +2,10 @@ package com.swm.ml.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.swm.ml.model.ErrorResponse;
@@ -94,6 +96,59 @@ public class GlobalExceptionHandler {
             .build();
         
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Handle MethodArgumentNotValidException for validation errors.
+     * 
+     * @param exception the MethodArgumentNotValidException
+     * @param request the HTTP request
+     * @return ResponseEntity with error details and 400 status
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(
+            MethodArgumentNotValidException exception,
+            HttpServletRequest request) {
+        
+        logger.warn("Validation error: {}", exception.getMessage());
+        
+        String message = exception.getBindingResult().getFieldErrors().stream()
+            .map(error -> error.getField() + ": " + error.getDefaultMessage())
+            .findFirst()
+            .orElse("Validation failed");
+        
+        ErrorResponse errorResponse = ErrorResponse.builder()
+            .error("Bad Request")
+            .message(message)
+            .status(400)
+            .timestamp(LocalDateTime.now().toString())
+            .build();
+        
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handle NoResourceFoundException for 404 responses.
+     * 
+     * @param exception the NoResourceFoundException
+     * @param request the HTTP request
+     * @return ResponseEntity with error details and 404 status
+     */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoResourceFoundException(
+            NoResourceFoundException exception,
+            HttpServletRequest request) {
+        
+        logger.warn("Resource not found: {}", exception.getMessage());
+        
+        ErrorResponse errorResponse = ErrorResponse.builder()
+            .error("Not Found")
+            .message("The requested resource was not found")
+            .status(404)
+            .timestamp(LocalDateTime.now().toString())
+            .build();
+        
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     /**

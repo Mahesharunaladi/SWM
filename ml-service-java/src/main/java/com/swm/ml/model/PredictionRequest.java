@@ -3,6 +3,7 @@ package com.swm.ml.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.List;
+import jakarta.validation.constraints.*;
 
 /**
  * Request DTO for prediction endpoint.
@@ -14,9 +15,12 @@ public class PredictionRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @JsonProperty("bin_id")
+    @NotNull(message = "Bin ID is required")
     private String binId;
 
     @JsonProperty("features")
+    @NotNull(message = "Features are required")
+    @Size(min = 5, max = 5, message = "Exactly 5 features required")
     private List<Double> features;
 
     public PredictionRequest() {

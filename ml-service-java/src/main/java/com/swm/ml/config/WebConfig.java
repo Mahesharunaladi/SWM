@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.UUID;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 /**
  * Web configuration for the ML Service.
@@ -30,7 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
      * @param registry the InterceptorRegistry to register interceptors
      */
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
         registry.addInterceptor(loggingInterceptor());
     }
 
@@ -42,11 +44,12 @@ public class WebConfig implements WebMvcConfigurer {
      * @return HandlerInterceptor for request logging
      */
     @Bean
+    @NonNull
     public HandlerInterceptor loggingInterceptor() {
         return new HandlerInterceptor() {
             @Override
-            public boolean preHandle(HttpServletRequest request, HttpServletResponse response, 
-                                   Object handler) throws Exception {
+            public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, 
+                                   @NonNull Object handler) throws Exception {
                 String requestId = UUID.randomUUID().toString();
                 request.setAttribute("requestId", requestId);
                 
@@ -58,8 +61,8 @@ public class WebConfig implements WebMvcConfigurer {
             }
 
             @Override
-            public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
-                                      Object handler, Exception ex) throws Exception {
+            public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+                                      @NonNull Object handler, @Nullable Exception ex) throws Exception {
                 String requestId = (String) request.getAttribute("requestId");
                 Long startTime = (Long) request.getAttribute("startTime");
                 long duration = System.currentTimeMillis() - startTime;

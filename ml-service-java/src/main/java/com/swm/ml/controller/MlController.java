@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import com.swm.ml.model.*;
 import com.swm.ml.service.MlService;
 import java.time.LocalDateTime;
+import jakarta.validation.Valid;
 
 /**
  * REST Controller for Machine Learning Service endpoints.
@@ -68,7 +69,7 @@ public class MlController {
      */
     @PostMapping("/api/v1/predict")
     public ResponseEntity<PredictionResponse> predict(
-            @RequestBody PredictionRequest request) {
+            @Valid @RequestBody PredictionRequest request) {
         logger.info("Predict endpoint called for bin: {}", request.getBinId());
         
         try {
@@ -91,7 +92,7 @@ public class MlController {
      */
     @PostMapping("/api/v1/train")
     public ResponseEntity<TrainingResponse> train(
-            @RequestBody TrainingRequest request) {
+            @Valid @RequestBody TrainingRequest request) {
         logger.info("Train endpoint called");
         
         try {
@@ -114,7 +115,7 @@ public class MlController {
      */
     @PostMapping("/api/v1/optimize-routes")
     public ResponseEntity<RouteOptimizationResponse> optimizeRoutes(
-            @RequestBody RouteOptimizationRequest request) {
+            @Valid @RequestBody RouteOptimizationRequest request) {
         logger.info("Optimize routes endpoint called");
         
         try {

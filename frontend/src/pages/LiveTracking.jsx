@@ -57,7 +57,7 @@ const LiveTracking = () => {
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [mapZoom, setMapZoom] = useState(1);
   const [mapCenter, setMapCenter] = useState({ lat: 12.95, lng: 77.6 });
-  const [showSpeedometer, setShowSpeedometer] = useState(true);
+  // const [showSpeedometer, setShowSpeedometer] = useState(true);
 
   // Simulate truck movement every 5 seconds
   useEffect(() => {
@@ -88,11 +88,11 @@ const LiveTracking = () => {
     if (selectedTruck) {
       setMapCenter({ lat: selectedTruck.latitude, lng: selectedTruck.longitude });
     }
-  }, [selectedTruck?.id]);
+  }, [selectedTruck]);
 
-  const getStatusColor = (status) => {
-    return status === 'active' ? '#10b981' : '#9ca3af';
-  };
+  // const getStatusColor = (status) => {
+  //   return status === 'active' ? '#10b981' : '#9ca3af';
+  // };
 
   const getTruckIcon = (status) => {
     return status === 'active' ? '🚚' : '🚛';

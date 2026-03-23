@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -25,11 +24,7 @@ public class ModelManager {
     @Value("${ml.model.path:models/waste_predictor_model.pkl}")
     private String modelPath;
 
-    @Value("${ml.scaler.path:models/scaler.pkl}")
-    private String scalerPath;
-
     private Object model;
-    private Object scaler;
     private boolean modelLoaded;
 
     /**
@@ -68,13 +63,6 @@ public class ModelManager {
             // In a real implementation, deserialize the model object
             // model = deserializeModel(modelPath);
             model = new Object(); // Placeholder
-        }
-
-        if (Files.exists(Paths.get(scalerPath))) {
-            logger.info("Loading scaler from: {}", scalerPath);
-            // In a real implementation, deserialize the scaler object
-            // scaler = deserializeModel(scalerPath);
-            scaler = new Object(); // Placeholder
         }
     }
 

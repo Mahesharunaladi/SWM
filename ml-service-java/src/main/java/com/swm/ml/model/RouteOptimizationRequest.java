@@ -3,6 +3,7 @@ package com.swm.ml.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.List;
+import jakarta.validation.constraints.*;
 
 /**
  * Request DTO for route optimization endpoint.
@@ -14,12 +15,16 @@ public class RouteOptimizationRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @JsonProperty("bins")
+    @NotNull(message = "Bins are required")
+    @NotEmpty(message = "Bins cannot be empty")
     private List<WasteBin> bins;
 
     @JsonProperty("start_location")
+    @NotNull(message = "Start location is required")
     private String startLocation;
 
     @JsonProperty("end_location")
+    @NotNull(message = "End location is required")
     private String endLocation;
 
     public RouteOptimizationRequest() {
