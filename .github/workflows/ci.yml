@@ -34,6 +34,15 @@ jobs:
         run: npm run lint --if-present
         continue-on-error: true
 
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Lint frontend
+        working-directory: frontend
+        run: npm run lint --if-present
+        continue-on-error: true
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
