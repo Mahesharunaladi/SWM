@@ -97,7 +97,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ./backend/coverage/coverage-final.json
           flags: backend
@@ -152,7 +152,7 @@ jobs:
         run: pytest --cov=src tests/
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ./ml-service/.coverage
           flags: ml-service
@@ -179,7 +179,7 @@ jobs:
         run: mvn test
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ./ml-service-java/target/site/jacoco/jacoco.xml
           flags: java-service
@@ -372,7 +372,7 @@ jobs:
     if: always()
     steps:
       - name: Comment PR with test results
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         if: github.event_name == 'pull_request'
         with:
           script: |
