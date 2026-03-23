@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import '../styles/Dashboard.css';
 
 const Dashboard = ({ sidebarOpen }) => {
-  const [stats, setStats] = useState({
+  const [stats] = useState({
     activeBins: 1247,
     avgFillLevel: 68,
     collectionsToday: 12,
     carbonSaved: 2345,
   });
 
-  const [recentActivity, setRecentActivity] = useState([
+  const [recentActivity] = useState([
     {
       id: 1,
       bin: 'BIN-001',
@@ -43,7 +43,7 @@ const Dashboard = ({ sidebarOpen }) => {
   const [filters, setFilters] = useState('today');
 
   // Truck & Driver Data with Route Information
-  const [trucks, setTrucks] = useState([
+  const [trucks] = useState([
     {
       id: 1,
       truckNo: 'TRK-001',
