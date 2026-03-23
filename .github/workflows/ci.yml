@@ -24,7 +24,6 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
 
       - name: Install backend dependencies
         working-directory: backend
@@ -53,6 +52,18 @@ jobs:
           flake8 src/
         continue-on-error: true
 
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Lint Java service
+        working-directory: ml-service-java
+        run: mvn checkstyle:check
+        continue-on-error: true
+
   # Backend Tests
   backend-test:
     name: Backend Tests
@@ -66,7 +77,6 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
 
       - name: Install dependencies
         working-directory: backend
@@ -97,7 +107,6 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         working-directory: frontend
@@ -139,6 +148,33 @@ jobs:
           name: ml-coverage
         continue-on-error: true
 
+  # Java Service Tests
+  java-test:
+    name: Java Service Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run tests
+        working-directory: ml-service-java
+        run: mvn test
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./ml-service-java/target/site/jacoco/jacoco.xml
+          flags: java-service
+          name: java-coverage
+        continue-on-error: true
+
   # Security Scanning
   security-scan:
     name: Security Scan
@@ -165,7 +201,7 @@ jobs:
   build:
     name: Build Docker Images
     runs-on: ubuntu-latest
-    needs: [backend-test, frontend-test, ml-test]
+    needs: [backend-test, frontend-test, ml-test, java-test]
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     permissions:
       contents: read
@@ -174,6 +210,7 @@ jobs:
       backend-image: ${{ steps.meta-backend.outputs.tags }}
       frontend-image: ${{ steps.meta-frontend.outputs.tags }}
       ml-image: ${{ steps.meta-ml.outputs.tags }}
+      java-image: ${{ steps.meta-java.outputs.tags }}
     steps:
       - uses: actions/checkout@v3
 
@@ -250,6 +287,27 @@ jobs:
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ml-service:buildcache
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ml-service:buildcache,mode=max
 
+      # Build Java Service
+      - name: Extract metadata (java-service)
+        id: meta-java
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/java-service
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=semver,pattern={{version}}
+
+      - name: Build and push Java service
+        uses: docker/build-push-action@v4
+        with:
+          context: ./ml-service-java
+          push: true
+          tags: ${{ steps.meta-java.outputs.tags }}
+          labels: ${{ steps.meta-java.outputs.labels }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/java-service:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/java-service:buildcache,mode=max
+
   # Integration Tests
   integration-test:
     name: Integration Tests
@@ -299,7 +357,7 @@ jobs:
   quality-report:
     name: Code Quality Report
     runs-on: ubuntu-latest
-    needs: [backend-test, frontend-test, ml-test]
+    needs: [backend-test, frontend-test, ml-test, java-test]
     if: always()
     steps:
       - name: Comment PR with test results
@@ -311,7 +369,8 @@ jobs:
             const testResults = {
               backend: '${{ needs.backend-test.result }}',
               frontend: '${{ needs.frontend-test.result }}',
-              ml: '${{ needs.ml-test.result }}'
+              ml: '${{ needs.ml-test.result }}',
+              java: '${{ needs.java-test.result }}'
             };
             
             const comment = `## CI Pipeline Results
@@ -321,6 +380,7 @@ jobs:
             | Backend | ${testResults.backend === 'success' ? '✅ Passed' : '❌ Failed'} |
             | Frontend | ${testResults.frontend === 'success' ? '✅ Passed' : '❌ Failed'} |
             | ML Service | ${testResults.ml === 'success' ? '✅ Passed' : '❌ Failed'} |
+            | Java Service | ${testResults.java === 'success' ? '✅ Passed' : '❌ Failed'} |
             `;
             
             github.rest.issues.createComment({
