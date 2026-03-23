@@ -47,8 +47,9 @@ jobs:
         continue-on-error: true
 
       - name: Slack notification
-        uses: slackapi/slack-github-action@v1
+        uses: slackapi/slack-github-action@v1.24.0
         with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
           payload: |
             {
               "text": "SWM Staging Deployment",
@@ -62,7 +63,5 @@ jobs:
                 }
               ]
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()
         continue-on-error: true

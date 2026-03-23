@@ -55,13 +55,13 @@ const Home = () => {
         <div className="features-grid">
           <div className="feature-card">
             <div className="feature-icon">�</div>
-            <h3>QR Code Scanning</h3>
-            <p>Every bin has a QR code. Driver scans it with the vehicle scanner or phone</p>
+            <h3>QR Codes on Every Bin</h3>
+            <p>Every waste bin has a unique QR code sticker for identification and tracking</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">�</div>
-            <h3>Vehicle Scanner</h3>
-            <p>Scanner mounted on the truck captures QR codes instantly during collection</p>
+            <h3>Vehicle-Mounted Scanner</h3>
+            <p>Automatic QR scanner installed on the truck reads codes instantly during collection</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">📊</div>
@@ -75,8 +75,8 @@ const Home = () => {
           </div>
           <div className="feature-card">
             <div className="feature-icon">✅</div>
-            <h3>Instant Confirmation</h3>
-            <p>Scan confirmation message appears instantly - no sensors, no delays</p>
+            <h3>Instant Recording</h3>
+            <p>Collection recorded automatically when vehicle scanner reads QR code - no manual entry</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">📄</div>
@@ -117,8 +117,8 @@ const Home = () => {
           <div className="step-card">
             <div className="step-number">04</div>
             <div className="step-icon">📱</div>
-            <h3>Scan QR Code</h3>
-            <p>Driver uses scanner mounted on vehicle (or phone camera). Instant success message appears</p>
+            <h3>Vehicle Scanner Reads QR</h3>
+            <p>Vehicle-mounted QR scanner automatically detects and reads the QR code instantly</p>
           </div>
           <div className="step-arrow">→</div>
           <div className="step-card">

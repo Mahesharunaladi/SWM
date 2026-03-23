@@ -14,13 +14,13 @@ echo ""
 PYTHON_PATH="/Users/mahesharunaladi/Documents/SWM/SWM/ml-service/venv/bin/python"
 
 if [ -f "$PYTHON_PATH" ]; then
-    echo "✅ Python found at: $PYTHON_PATH"
+    echo "Python found at: $PYTHON_PATH"
     echo ""
     echo "Installed packages:"
     $PYTHON_PATH -m pip list | grep -E "flask|joblib|pandas|numpy|python-dotenv"
     echo ""
 else
-    echo "❌ Python not found at $PYTHON_PATH"
+    echo "Python not found at $PYTHON_PATH"
 fi
 
 # Test 2: Check if individual DTO files exist
