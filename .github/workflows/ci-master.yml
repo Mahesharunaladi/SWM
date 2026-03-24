@@ -8,46 +8,20 @@ on:
   workflow_dispatch:
 
 jobs:
-  # Trigger all language-specific workflows
-  trigger-workflows:
-    name: Trigger Language Workflows
+  # Overall status check - individual workflows are triggered by path changes
+  ci-status:
+    name: CI Status Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check for JavaScript changes
-        id: js-changed
+      - name: CI Status
         run: |
-          if [ -n "$(git diff --name-only HEAD~1 | grep -E '(frontend|backend|package\.json)')" ]; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Check for Java changes
-        id: java-changed
-        run: |
-          if [ -n "$(git diff --name-only HEAD~1 | grep -E '(ml-service-java|pom\.xml)')" ]; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Check for Python changes
-        id: python-changed
-        run: |
-          if [ -n "$(git diff --name-only HEAD~1 | grep -E '(ml-service|requirements.*\.txt|pytest\.ini)')" ]; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
-
-  # Overall status check
-  ci-status:
-    name: CI Status Check
-    runs-on: ubuntu-latest
-    needs: trigger-workflows
-    steps:
-      - name: All checks passed
-        run: echo "All language-specific CI workflows have been triggered based on code changes."
+          echo "🔄 CI workflows are configured to run based on file path changes:"
+          echo "  • JavaScript/TypeScript: ci-javascript.yml (frontend/, backend/, *.json)"
+          echo "  • Java: ci-java.yml (ml-service-java/, pom.xml)"
+          echo "  • Python: ci-python.yml (ml-service/, requirements*, pytest.ini)"
+          echo "  • Build/Deploy: ci-deploy.yml (all changes)"
+          echo ""
+          echo "✅ All workflows use proper caching and Node.js 24 enforcement"
