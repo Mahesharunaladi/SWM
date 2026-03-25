@@ -1,0 +1,56 @@
+<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="truckGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="wasteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF9800;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F57C00;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Road -->
+  <rect x="0" y="160" width="300" height="40" fill="#424242"/>
+  <line x1="0" y1="180" x2="300" y2="180" stroke="#616161" stroke-width="2" stroke-dasharray="10,5"/>
+
+  <!-- Truck Body -->
+  <rect x="80" y="100" width="140" height="50" rx="5" ry="5" fill="url(#truckGradient)" stroke="#1B5E20" stroke-width="2"/>
+  <rect x="220" y="110" width="40" height="40" rx="20" ry="20" fill="url(#truckGradient)" stroke="#1B5E20" stroke-width="2"/>
+
+  <!-- Truck Cabin -->
+  <rect x="40" y="90" width="50" height="40" rx="5" ry="5" fill="url(#truckGradient)" stroke="#1B5E20" stroke-width="2"/>
+  <rect x="45" y="95" width="15" height="15" rx="2" ry="2" fill="#81C784"/>
+  <rect x="65" y="95" width="15" height="15" rx="2" ry="2" fill="#81C784"/>
+
+  <!-- Wheels -->
+  <circle cx="70" cy="155" r="15" fill="#212121" stroke="#000" stroke-width="2"/>
+  <circle cx="70" cy="155" r="8" fill="#616161"/>
+  <circle cx="130" cy="155" r="15" fill="#212121" stroke="#000" stroke-width="2"/>
+  <circle cx="130" cy="155" r="8" fill="#616161"/>
+  <circle cx="250" cy="155" r="15" fill="#212121" stroke="#000" stroke-width="2"/>
+  <circle cx="250" cy="155" r="8" fill="#616161"/>
+
+  <!-- Waste Bins -->
+  <rect x="10" y="130" width="20" height="25" rx="2" ry="2" fill="url(#wasteGradient)" stroke="#E65100" stroke-width="1"/>
+  <rect x="35" y="135" width="15" height="20" rx="2" ry="2" fill="url(#wasteGradient)" stroke="#E65100" stroke-width="1"/>
+  <rect x="270" y="125" width="25" height="30" rx="2" ry="2" fill="url(#wasteGradient)" stroke="#E65100" stroke-width="1"/>
+
+  <!-- QR Code on Bin -->
+  <rect x="12" y="132" width="16" height="16" fill="white" stroke="#000" stroke-width="1"/>
+  <rect x="14" y="134" width="3" height="3" fill="#000"/>
+  <rect x="19" y="134" width="3" height="3" fill="#000"/>
+  <rect x="14" y="139" width="3" height="3" fill="#000"/>
+  <rect x="19" y="139" width="3" height="3" fill="#000"/>
+  <rect x="24" y="139" width="3" height="3" fill="#000"/>
+
+  <!-- Collection Animation Arrow -->
+  <path d="M 150 80 L 160 70 L 170 80 L 165 80 L 165 90 L 155 90 L 155 80 Z"
+        fill="#FF5722" stroke="#D84315" stroke-width="1">
+    <animateTransform attributeName="transform" type="translate" values="0,0; 0,10; 0,0" dur="2s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Truck Details -->
+  <text x="100" y="125" font-family="Arial, sans-serif" font-size="10" fill="white" font-weight="bold">SWM</text>
+  <text x="100" y="135" font-family="Arial, sans-serif" font-size="8" fill="white">TRUCK</text>
+</svg>

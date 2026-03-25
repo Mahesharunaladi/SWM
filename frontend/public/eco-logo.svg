@@ -1,0 +1,55 @@
+<svg width="300" height="320" viewBox="0 0 300 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="leafGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22C55E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16A34A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="leafGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ADE80;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#22C55E;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="leafGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22C55E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#15803D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Shadow -->
+  <ellipse cx="150" cy="300" rx="80" ry="15" fill="#000000" opacity="0.15"/>
+
+  <!-- Top Leaf -->
+  <g transform="translate(150, 80)">
+    <!-- Leaf shape -->
+    <path d="M 0,-60 Q 20,-40 20,-10 Q 20,20 0,35 Q -20,20 -20,-10 Q -20,-40 0,-60 Z" fill="url(#leafGradient1)" stroke="none"/>
+    <!-- Leaf vein lines -->
+    <path d="M 0,-50 Q 8,-35 8,-15" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M 0,-50 Q -8,-35 -8,-15" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Branch -->
+    <path d="M 0,35 Q -15,50 -30,65" stroke="#16A34A" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Bottom Left Leaf -->
+  <g transform="translate(80, 200) rotate(-120)">
+    <!-- Leaf shape -->
+    <path d="M 0,-60 Q 20,-40 20,-10 Q 20,20 0,35 Q -20,20 -20,-10 Q -20,-40 0,-60 Z" fill="url(#leafGradient2)" stroke="none"/>
+    <!-- Leaf vein lines -->
+    <path d="M 0,-50 Q 8,-35 8,-15" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M 0,-50 Q -8,-35 -8,-15" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Branch -->
+    <path d="M 0,35 Q -15,50 -30,65" stroke="#22C55E" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Bottom Right Leaf -->
+  <g transform="translate(220, 200) rotate(120)">
+    <!-- Leaf shape -->
+    <path d="M 0,-60 Q 20,-40 20,-10 Q 20,20 0,35 Q -20,20 -20,-10 Q -20,-40 0,-60 Z" fill="url(#leafGradient3)" stroke="none"/>
+    <!-- Leaf vein lines -->
+    <path d="M 0,-50 Q 8,-35 8,-15" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M 0,-50 Q -8,-35 -8,-15" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Branch -->
+    <path d="M 0,35 Q -15,50 -30,65" stroke="#16A34A" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Center circle (negative space) -->
+  <circle cx="150" cy="150" r="65" fill="white"/>
+</svg>

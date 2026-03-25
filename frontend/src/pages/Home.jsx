@@ -41,7 +41,7 @@ const Home = () => {
             </div>
           </div>
           <div className="hero-image">
-            <img src="/waste-collection-truck.svg" alt="Smart Waste Management - Truck Collecting Waste with QR Technology" className="hero-visual-image" />
+            <img src="/waste-collection-truck.svg" alt="Smart Waste Management - Truck Collecting Waste" className="hero-visual-image" />
           </div>
         </div>
       </section>
