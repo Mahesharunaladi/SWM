@@ -7,12 +7,14 @@ on:
       - 'frontend/**'
       - 'backend/**'
       - 'package*.json'
+      - '.github/workflows/ci-javascript.yml'
   push:
     branches: [main, develop]
     paths:
       - 'frontend/**'
       - 'backend/**'
       - 'package*.json'
+      - '.github/workflows/ci-javascript.yml'
   workflow_dispatch:
 
 env:

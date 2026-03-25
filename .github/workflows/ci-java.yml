@@ -6,11 +6,13 @@ on:
     paths:
       - 'ml-service-java/**'
       - 'pom.xml'
+      - '.github/workflows/ci-java.yml'
   push:
     branches: [main, develop]
     paths:
       - 'ml-service-java/**'
       - 'pom.xml'
+      - '.github/workflows/ci-java.yml'
   workflow_dispatch:
 
 jobs:

@@ -7,12 +7,14 @@ on:
       - 'ml-service/**'
       - 'requirements*.txt'
       - 'pytest.ini'
+      - '.github/workflows/ci-python.yml'
   push:
     branches: [main, develop]
     paths:
       - 'ml-service/**'
       - 'requirements*.txt'
       - 'pytest.ini'
+      - '.github/workflows/ci-python.yml'
   workflow_dispatch:
 
 jobs:
