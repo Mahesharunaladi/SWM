@@ -11,7 +11,7 @@ const Navbar = ({ isLoggedIn }) => {
     <nav className="navbar-top">
       <div className="navbar-container">
         <div className="navbar-brand">
-          <span className="brand-icon">♻️</span>
+          <img src="/logo.svg" alt="SWM Logo" className="brand-logo" />
           <span className="brand-text">SWM</span>
         </div>
 

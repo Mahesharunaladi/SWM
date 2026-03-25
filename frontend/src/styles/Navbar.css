@@ -28,8 +28,9 @@
   font-size: 1.5rem;
 }
 
-.brand-icon {
-  font-size: 2rem;
+.brand-logo {
+  height: 2rem;
+  width: auto;
 }
 
 .brand-text {

@@ -1,0 +1,22 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" stroke="#047857" stroke-width="2"/>
+
+  <!-- Modern recycling symbol -->
+  <g transform="translate(20,20)">
+    <!-- Main recycling arrows -->
+    <path d="M-6,-2 L0,-8 L6,-2" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6,2 L0,8 L-6,2" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-2,-6 L8,0 L-2,6" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Small accent dot -->
+  <circle cx="20" cy="12" r="1.5" fill="white" opacity="0.8"/>
+</svg>
