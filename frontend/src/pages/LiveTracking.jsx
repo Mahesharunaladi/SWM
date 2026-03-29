@@ -7,6 +7,7 @@ const LiveTracking = () => {
     {
       id: 'TRK-001',
       driver: 'Rajesh Kumar',
+      phone: '+91-9876543210',
       latitude: 12.9716,
       longitude: 77.5946,
       status: 'active',
@@ -19,6 +20,7 @@ const LiveTracking = () => {
     {
       id: 'TRK-002',
       driver: 'Arjun Singh',
+      phone: '+91-9876543211',
       latitude: 12.9352,
       longitude: 77.6245,
       status: 'active',
@@ -31,6 +33,7 @@ const LiveTracking = () => {
     {
       id: 'TRK-003',
       driver: 'Priya Sharma',
+      phone: '+91-9876543212',
       latitude: 12.8349,
       longitude: 77.6645,
       status: 'idle',
@@ -43,6 +46,7 @@ const LiveTracking = () => {
     {
       id: 'TRK-004',
       driver: 'Vikram Patel',
+      phone: '+91-9876543213',
       latitude: 12.9689,
       longitude: 77.5456,
       status: 'active',
@@ -58,6 +62,8 @@ const LiveTracking = () => {
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [mapZoom, setMapZoom] = useState(1);
   const [mapCenter, setMapCenter] = useState({ lat: 12.95, lng: 77.6 });
+  const [searchPhone, setSearchPhone] = useState('');
+  const [filteredTrucks, setFilteredTrucks] = useState([]);
   // const [showSpeedometer, setShowSpeedometer] = useState(true);
 
   // Simulate truck movement every 5 seconds
@@ -90,6 +96,21 @@ const LiveTracking = () => {
       setMapCenter({ lat: selectedTruck.latitude, lng: selectedTruck.longitude });
     }
   }, [selectedTruck]);
+
+  // Filter trucks by phone number, truck ID, or driver name
+  useEffect(() => {
+    if (searchPhone.trim() === '') {
+      setFilteredTrucks(trucks);
+    } else {
+      const searchTerm = searchPhone.toLowerCase();
+      const filtered = trucks.filter(truck =>
+        truck.id.toLowerCase().includes(searchTerm) ||
+        truck.phone.includes(searchPhone) || 
+        truck.driver.toLowerCase().includes(searchTerm)
+      );
+      setFilteredTrucks(filtered);
+    }
+  }, [searchPhone, trucks]);
 
   // const getStatusColor = (status) => {
   //   return status === 'active' ? '#10b981' : '#9ca3af';
@@ -163,7 +184,7 @@ const LiveTracking = () => {
 
           <div className="map-visual">
             <MapComponent 
-              trucks={trucks}
+              trucks={filteredTrucks}
               selectedTruck={selectedTruck}
               onTruckSelect={setSelectedTruck}
             />
@@ -255,9 +276,19 @@ const LiveTracking = () => {
 
         {/* Trucks List */}
         <div className="trucks-list-container">
-          <h2>Active Trucks</h2>
+          <div className="trucks-header">
+            <h2>Active Trucks</h2>
+            <input
+              type="text"
+              placeholder="Search by truck ID, phone, or driver..."
+              value={searchPhone}
+              onChange={(e) => setSearchPhone(e.target.value)}
+              className="phone-search-input"
+            />
+          </div>
           <div className="trucks-list">
-            {trucks.map((truck) => (
+            {filteredTrucks.length > 0 ? (
+              filteredTrucks.map((truck) => (
               <div
                 key={truck.id}
                 className={`truck-item ${selectedTruck?.id === truck.id ? 'selected' : ''}`}
@@ -307,7 +338,12 @@ const LiveTracking = () => {
                   </span>
                 </div>
               </div>
-            ))}
+            ))
+            ) : (
+              <div className="no-trucks-message">
+                <p>❌ No trucks found matching "{searchPhone}"</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
