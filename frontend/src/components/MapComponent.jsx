@@ -146,6 +146,25 @@ const MapComponent = ({ trucks, selectedTruck, onTruckSelect }) => {
     console.log(`📊 Total markers on map:`, Object.keys(markersRef.current).length);
   });
 
+  // Open popup when a truck is selected
+  useEffect(() => {
+    if (selectedTruck && mapRef.current && markersRef.current[selectedTruck.id]) {
+      const marker = markersRef.current[selectedTruck.id];
+      console.log(`🎯 Opening popup for selected truck: ${selectedTruck.id}`);
+      
+      // Close all other popups
+      Object.values(markersRef.current).forEach(m => {
+        mapRef.current.closePopup(m.getPopup());
+      });
+      
+      // Open the selected truck's popup
+      marker.openPopup();
+      
+      // Pan to the truck location
+      mapRef.current.setView(marker.getLatLng(), 15, { animate: true });
+    }
+  }, [selectedTruck]);
+
   // Handle zoom controls
   const handleZoomIn = () => {
     if (mapRef.current) {
