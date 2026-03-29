@@ -281,6 +281,7 @@
   overflow-y: auto;
   z-index: 20;
   animation: slideInRight 0.3s ease;
+  padding-top: 2.5rem;
 }
 
 @keyframes slideInRight {
@@ -511,16 +512,27 @@
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
+  width: 32px;
+  height: 32px;
+  background: #f3f4f6;
+  border: 2px solid #e5e7eb;
+  border-radius: 50%;
+  font-size: 1.25rem;
   cursor: pointer;
-  color: #9ca3af;
-  transition: color 0.2s ease;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 30;
 }
 
 .close-btn:hover {
-  color: #1f2937;
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+  transform: scale(1.1);
 }
 
 .selected-truck-info h3 {
