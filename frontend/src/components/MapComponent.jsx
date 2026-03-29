@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import '../styles/MapComponent.css';
 
 // Fix for default markers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -14,6 +15,7 @@ const MapComponent = ({ trucks, selectedTruck, onTruckSelect }) => {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef({});
+  const [zoom, setZoom] = useState(13);
 
   // Initialize map
   useEffect(() => {
@@ -27,6 +29,11 @@ const MapComponent = ({ trucks, selectedTruck, onTruckSelect }) => {
       attribution: '© OpenStreetMap contributors',
       maxZoom: 19,
     }).addTo(mapRef.current);
+
+    // Track zoom level
+    mapRef.current.on('zoomend', () => {
+      setZoom(mapRef.current.getZoom());
+    });
 
     return () => {
       if (mapRef.current) {
@@ -43,28 +50,23 @@ const MapComponent = ({ trucks, selectedTruck, onTruckSelect }) => {
       const markerId = truck.id;
       const position = [truck.latitude, truck.longitude];
 
-      // Custom truck icon
-      const truckIcon = L.divIcon({
-        html: `
-          <div class="truck-icon ${truck.status}" style="
-            width: 40px;
-            height: 40px;
-            background: ${truck.status === 'active' ? '#10b981' : '#9ca3af'};
-            border: 3px solid ${selectedTruck?.id === truck.id ? '#3b82f6' : 'white'};
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            animation: ${truck.status === 'active' ? 'pulse 2s infinite' : 'none'};
-          ">
-            ${truck.status === 'active' ? '🚚' : '🚛'}
+      // Create truck icon HTML with better styling
+      const iconHTML = `
+        <div class="truck-map-icon ${truck.status} ${selectedTruck?.id === truck.id ? 'selected' : ''}">
+          <div class="truck-icon-inner">
+            <span class="truck-emoji">${truck.status === 'active' ? '🚚' : '🚛'}</span>
+            ${truck.status === 'active' ? '<div class="pulse-ring"></div>' : ''}
           </div>
-        `,
-        iconSize: [40, 40],
-        className: 'truck-marker-icon',
+          <div class="truck-id-label">${truck.id}</div>
+        </div>
+      `;
+
+      const truckIcon = L.divIcon({
+        html: iconHTML,
+        iconSize: [50, 60],
+        iconAnchor: [25, 50],
+        popupAnchor: [0, -50],
+        className: 'truck-icon-wrapper',
       });
 
       if (markersRef.current[markerId]) {
@@ -77,28 +79,40 @@ const MapComponent = ({ trucks, selectedTruck, onTruckSelect }) => {
         
         // Popup with truck info
         marker.bindPopup(`
-          <div style="width: 250px; padding: 10px;">
-            <h3 style="margin: 0 0 10px 0; color: #333;">${truck.id}</h3>
-            <p><strong>Driver:</strong> ${truck.driver}</p>
-            <p><strong>Status:</strong> <span style="color: ${truck.status === 'active' ? '#10b981' : '#9ca3af'}; font-weight: bold;">${truck.status.toUpperCase()}</span></p>
-            <p><strong>Speed:</strong> ${truck.speed} km/h</p>
-            <p><strong>Collections:</strong> ${truck.collectionsToday}</p>
-            <p><strong>Waste Collected:</strong> ${truck.wasteCollected.toFixed(1)} kg</p>
-            <p><strong>Next Bin:</strong> ${truck.nextBin}</p>
-            <p><strong>Efficiency:</strong> ${truck.efficiency}%</p>
-            <p><strong>Coordinates:</strong> ${truck.latitude.toFixed(4)}°N, ${truck.longitude.toFixed(4)}°E</p>
-            <button onclick="window.mapTruckSelect('${truck.id}')" style="
-              width: 100%;
-              padding: 8px;
-              background: #3b82f6;
-              color: white;
-              border: none;
-              border-radius: 4px;
-              cursor: pointer;
-              font-weight: bold;
-            ">View Details</button>
+          <div class="truck-popup-content">
+            <h4 style="margin: 0 0 8px 0; color: #1f2937; font-size: 14px; font-weight: bold;">${truck.id}</h4>
+            <div class="popup-info">
+              <div class="info-row">
+                <span class="info-label">Driver:</span>
+                <span class="info-value">${truck.driver}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Status:</span>
+                <span class="info-value status ${truck.status}">${truck.status.toUpperCase()}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Speed:</span>
+                <span class="info-value">${truck.speed} km/h</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Collections:</span>
+                <span class="info-value">${truck.collectionsToday}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Waste:</span>
+                <span class="info-value">${truck.wasteCollected.toFixed(1)} kg</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Next Bin:</span>
+                <span class="info-value">${truck.nextBin}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Efficiency:</span>
+                <span class="info-value">${truck.efficiency}%</span>
+              </div>
+            </div>
           </div>
-        `);
+        `, { maxWidth: 280 });
 
         marker.on('click', () => onTruckSelect(truck));
         markersRef.current[markerId] = marker;
@@ -106,27 +120,54 @@ const MapComponent = ({ trucks, selectedTruck, onTruckSelect }) => {
     });
   }, [trucks, selectedTruck, onTruckSelect]);
 
-  // Center map on selected truck
-  useEffect(() => {
-    if (selectedTruck && mapRef.current) {
-      mapRef.current.setView(
-        [selectedTruck.latitude, selectedTruck.longitude],
-        15,
-        { animate: true }
-      );
+  // Handle zoom controls
+  const handleZoomIn = () => {
+    if (mapRef.current) {
+      mapRef.current.zoomIn();
     }
-  }, [selectedTruck]);
+  };
+
+  const handleZoomOut = () => {
+    if (mapRef.current) {
+      mapRef.current.zoomOut();
+    }
+  };
+
+  const handleResetView = () => {
+    if (mapRef.current) {
+      mapRef.current.setView([12.9716, 77.5946], 13, { animate: true });
+    }
+  };
 
   return (
-    <div
-      ref={mapContainer}
-      style={{
-        width: '100%',
-        height: '100%',
-        borderRadius: '8px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-      }}
-    />
+    <div className="map-component-container">
+      <div className="map-controls-overlay">
+        <button onClick={handleZoomIn} className="map-control-btn" title="Zoom In">
+          🔍+
+        </button>
+        <button onClick={handleZoomOut} className="map-control-btn" title="Zoom Out">
+          🔍−
+        </button>
+        <button onClick={handleResetView} className="map-control-btn" title="Reset View">
+          🎯
+        </button>
+      </div>
+      <div
+        ref={mapContainer}
+        className="map-container-main"
+      />
+      <div className="map-legend-overlay">
+        <h4 style={{ margin: '0 0 8px 0', fontSize: '12px', fontWeight: 'bold' }}>Legend</h4>
+        <div className="legend-item">
+          <span style={{ fontSize: '20px' }}>🚚</span>
+          <span>Active Truck</span>
+        </div>
+        <div className="legend-item">
+          <span style={{ fontSize: '20px' }}>🚛</span>
+          <span>Idle Truck</span>
+        </div>
+      </div>
+    </div>
   );
 };
 

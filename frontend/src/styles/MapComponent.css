@@ -1,0 +1,299 @@
+/* Map Component Styles */
+
+.map-component-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.map-container-main {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+/* Map Controls */
+.map-controls-overlay {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 400;
+}
+
+.map-control-btn {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.map-control-btn:hover {
+  background: #f3f4f6;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+.map-control-btn:active {
+  transform: scale(0.95);
+}
+
+/* Truck Icon Styling */
+.truck-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.truck-map-icon {
+  position: relative;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 2px solid #9ca3af;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.truck-map-icon.active {
+  background: #ecfdf5;
+  border-color: #10b981;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.truck-map-icon.idle {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.truck-map-icon.selected {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transform: scale(1.15);
+}
+
+.truck-icon-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.truck-emoji {
+  font-size: 24px;
+  display: block;
+}
+
+/* Pulse animation for active trucks */
+.pulse-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #10b981;
+  border-radius: 8px;
+  animation: pulse-ring 2s infinite;
+  opacity: 0;
+}
+
+@keyframes pulse-ring {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+/* Truck ID Label */
+.truck-id-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #374151;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-top: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Popup Styling */
+.truck-popup-content {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 13px;
+  color: #374151;
+}
+
+.popup-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #6b7280;
+  min-width: 80px;
+}
+
+.info-value {
+  font-weight: 500;
+  color: #1f2937;
+  text-align: right;
+}
+
+.info-value.status {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.info-value.status.active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.info-value.status.idle {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+/* Leaflet popup overrides */
+.leaflet-popup-content-wrapper {
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.leaflet-popup-tip {
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.leaflet-popup-close-button {
+  font-size: 20px;
+  padding: 4px 8px;
+  color: #9ca3af;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #374151;
+}
+
+/* Map Legend */
+.map-legend-overlay {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background: white;
+  padding: 12px 14px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 400;
+  font-size: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+  color: #374151;
+}
+
+.legend-item span:first-child {
+  flex-shrink: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .map-control-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .map-controls-overlay {
+    top: 10px;
+    right: 10px;
+    gap: 6px;
+  }
+
+  .map-legend-overlay {
+    bottom: 10px;
+    left: 10px;
+    font-size: 11px;
+    padding: 10px 12px;
+  }
+
+  .truck-map-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .truck-emoji {
+    font-size: 20px;
+  }
+
+  .truck-id-label {
+    font-size: 9px;
+  }
+}
+
+/* Truck marker hover effect on map */
+.truck-map-icon:hover {
+  transform: scale(1.1);
+  z-index: 401;
+}
+
+/* Animation for marker appearance */
+.truck-map-icon {
+  animation: markerAppear 0.3s ease-out;
+}
+
+@keyframes markerAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
