@@ -590,7 +590,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .truck-id-driver {
@@ -637,7 +637,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .stat {
@@ -648,14 +648,14 @@
 }
 
 .stat .label {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: #9ca3af;
   font-weight: 600;
   text-transform: uppercase;
 }
 
 .stat .value {
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #1f2937;
 }
