@@ -174,10 +174,17 @@ const LiveTracking = () => {
                 <button className="close-btn" onClick={() => setSelectedTruck(null)}>✕</button>
                 
                 <div className="panel-header">
-                  <h3>{selectedTruck.id}</h3>
-                  <span className={`status-badge ${selectedTruck.status}`}>
-                    {selectedTruck.status === 'active' ? '🟢 Active' : '⚪ Idle'}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{ fontSize: '40px', lineHeight: '1' }}>
+                      {selectedTruck.status === 'active' ? '🚚' : '🚛'}
+                    </span>
+                    <div>
+                      <h3 style={{ margin: '0 0 4px 0' }}>{selectedTruck.id}</h3>
+                      <span className={`status-badge ${selectedTruck.status}`}>
+                        {selectedTruck.status === 'active' ? '🟢 Active' : '⚪ Idle'}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="panel-content">
@@ -258,8 +265,13 @@ const LiveTracking = () => {
               >
                 <div className="truck-header">
                   <div className="truck-id-driver">
-                    <span className="truck-id">{truck.id}</span>
-                    <span className={`status-indicator ${truck.status}`}></span>
+                    <span className="truck-icon-emoji" style={{ fontSize: '24px', marginRight: '8px' }}>
+                      {truck.status === 'active' ? '🚚' : '🚛'}
+                    </span>
+                    <div>
+                      <span className="truck-id">{truck.id}</span>
+                      <span className={`status-indicator ${truck.status}`}></span>
+                    </div>
                   </div>
                   <span className="driver-name">{truck.driver}</span>
                 </div>
