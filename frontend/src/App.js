@@ -16,11 +16,11 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
 
-  // Check if user is logged in on mount
+  // Check if user is logged in on mount and when location changes
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     setIsLoggedIn(loggedIn);
-  }, []);
+  }, [location.pathname]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Dashboard.css';
 
 const Dashboard = ({ sidebarOpen }) => {
+  const navigate = useNavigate();
   const [stats] = useState({
     activeBins: 1247,
     avgFillLevel: 68,
@@ -131,8 +133,8 @@ Total Waste Collected: ${truck.totalWaste} kg
   // Handle view route details
   const handleViewRoute = (e, truckNo) => {
     e.stopPropagation();
-    alert(`Route details for ${truckNo} - Navigate to Live Tracking for real-time map`);
-    console.log(`View route for ${truckNo}`);
+    navigate('/tracking');
+    console.log(`Navigating to Live Tracking for ${truckNo}`);
   };
 
   return (

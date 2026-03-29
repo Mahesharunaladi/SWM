@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/LiveTracking.css';
+import MapComponent from '../components/MapComponent';
 
 const LiveTracking = () => {
   const [trucks, setTrucks] = useState([
@@ -161,48 +162,11 @@ const LiveTracking = () => {
           </div>
 
           <div className="map-visual">
-            {/* Map Grid Background */}
-            <div className="map-grid">
-              {/* Grid lines for reference */}
-              <div className="grid-lines"></div>
-              
-              {/* Truck Markers with Live Position Detection */}
-              <div className="truck-markers-container">
-                {trucks.map((truck) => {
-                  const pos = coordToMapPosition(truck.latitude, truck.longitude);
-                  return (
-                    <div
-                      key={truck.id}
-                      className={`truck-marker live-marker ${selectedTruck?.id === truck.id ? 'selected' : ''} ${truck.status}`}
-                      style={{
-                        left: `${pos.left}%`,
-                        top: `${pos.top}%`,
-                        transform: 'translate(-50%, -50%)',
-                      }}
-                      onClick={() => setSelectedTruck(truck)}
-                      title={`${truck.id} - ${truck.driver}`}
-                    >
-                      <div className="marker-content">
-                        <span className="marker-icon">{getTruckIcon(truck.status)}</span>
-                        {truck.status === 'active' && <div className="marker-pulse"></div>}
-                      </div>
-                      <div className="marker-label-popup">{truck.id}</div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Map Info Overlay */}
-              <div className="map-info-overlay">
-                <div className="location-indicator">
-                  📍 Center: {mapCenter.lat.toFixed(4)}°N, {mapCenter.lng.toFixed(4)}°E
-                </div>
-                <div className="legend">
-                  <div className="legend-item active">🟢 Active Truck</div>
-                  <div className="legend-item idle">⚪ Idle Truck</div>
-                </div>
-              </div>
-            </div>
+            <MapComponent 
+              trucks={trucks}
+              selectedTruck={selectedTruck}
+              onTruckSelect={setSelectedTruck}
+            />
 
             {/* Selected Truck Info Panel */}
             {selectedTruck && (

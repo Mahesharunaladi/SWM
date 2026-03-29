@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/Sidebar.css';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [activeMenu, setActiveMenu] = useState('dashboard');
 
   const menuItems = [
@@ -55,21 +58,23 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
       <nav className="sidebar-nav">
         <ul className="sidebar-menu">
-          {menuItems.map((item) => (
-            <li key={item.id}>
-              <a
-                href={item.href}
-                className={`sidebar-link ${activeMenu === item.id ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActiveMenu(item.id);
-                }}
-              >
-                <span className="menu-icon">{item.icon}</span>
-                <span className="menu-label">{item.label}</span>
-              </a>
-            </li>
-          ))}
+          {menuItems.map((item) => {
+            const isActive = location.pathname === item.href;
+            return (
+              <li key={item.id}>
+                <button
+                  className={`sidebar-link ${isActive ? 'active' : ''}`}
+                  onClick={() => {
+                    setActiveMenu(item.id);
+                    navigate(item.href);
+                  }}
+                >
+                  <span className="menu-icon">{item.icon}</span>
+                  <span className="menu-label">{item.label}</span>
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 
